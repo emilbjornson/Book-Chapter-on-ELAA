@@ -1,4 +1,6 @@
-% For Figure 11 of the Book Chapter
+% This code corresponds to Figure 11 of the book chapter entitled "Near-Field Beamforming and Multiplexing Using Extremely Large Aperture Arrays"
+%written by Parisa Ramezani and Emil Björnson. 
+
 close all
 clear;
 
@@ -8,11 +10,11 @@ f_c = 3e9;
 %Wavelength
 lambda = 3e8/f_c;
 
-%Antenna spacing in fraction of wavelengths
-scalefactor = sqrt(2)/4;
+%Side length of each receive antenna in fraction of wavelengths
+sidelength = 1/4; 
 
 %Diagonal of each receive antenna
-D_antenna = scalefactor*lambda;
+D_antenna = sqrt(2)*sidelength*lambda;
 
 %Number of receive antennas per dimension
 Ndim = 100;
@@ -28,9 +30,6 @@ distance_B = (2*D_antenna*Ndim)/(fraunhoferDistanceAntenna);
 
 %Define the range of points along the horizontal axis
 relativeRange = sort([logspace(1,5,300) distance_B N/10 ]);
-
-
-
 
 %Determine the range of distances to be considered
 zRange = relativeRange*fraunhoferDistanceAntenna;
@@ -55,15 +54,20 @@ for m = 1:length(zRange)
     %Extract distance to transmitter
     z = zRange(m);
     
-    %Define the integrand E(x,y) in (5) and its absolute value square
+    %Define E(x,y) and its absolute value squared
     %(we have removed E_0/sqrt(4*pi) since it will cancel out)
     E_fun = @(x,y) sqrt((z.*(x.^2+z.^2))./((x.^2+y.^2+z.^2).^(5/2))).*exp(-1j*(2*pi).*sqrt((x.^2+y.^2+z.^2))/lambda);
     E2_fun = @(x,y) (z.*(x.^2+z.^2))./((x.^2+y.^2+z.^2).^(5/2));
     
     
-    %Compute all the terms in (15)
-    numerator_exact = zeros(Ndim,Ndim);
+    %%Array Gain
+    
+    %compute the integral in the demominator
     denominator_exact =  integral2(E2_fun, -D_antenna/sqrt(8),D_antenna/sqrt(8),-D_antenna/sqrt(8),D_antenna/sqrt(8));
+    
+    %compute all the terms in the numerator
+    numerator_exact = zeros(Ndim,Ndim);
+    
     
     for xdim = 1:Ndim
         
