@@ -52,7 +52,8 @@ for k = 1:K
     %Extract the distance to receiver
     z = focalPoints(k);
     
-    %Compute the electric field perpendicular to a receive antenna at location (x,y,0)
+    %Define E(x,y) and its absolute value squared
+    %(we have removed E_0/sqrt(4*pi) since it will cancel out)
     E_fun = @(x,y) sqrt((z.*(x.^2+z.^2))./((x.^2+y.^2+z.^2).^(5/2))).*exp(-1j*(2*pi).*(sqrt(x.^2+y.^2+z.^2))/lambda);
 
     %Compute all the terms in channel expression
