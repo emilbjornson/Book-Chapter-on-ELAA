@@ -52,24 +52,23 @@ for k = 1:K
     %Extract the distance to receiver
     z = focalPoints(k);
     
-    %Define E(x,y) and its absolute value squared
-    %(we have removed E_0/sqrt(4*pi) since it will cancel out)
+    %Define E(x,y)
     E_fun = @(x,y) sqrt((z.*(x.^2+z.^2))./((x.^2+y.^2+z.^2).^(5/2))).*exp(-1j*(2*pi).*(sqrt(x.^2+y.^2+z.^2))/lambda);
 
     %Compute all the terms in channel expression
-    numerator_exact = zeros(Ndim,Ndim);
+    channels = zeros(Ndim,Ndim);
 
     for xdim = 1:Ndim
 
         for ydim = 1:Ndim
 
-            numerator_exact(xdim,ydim) = integral2(E_fun, gridPoints(xdim)-D_antenna/sqrt(8),gridPoints(xdim)+D_antenna/sqrt(8),gridPoints(ydim)-D_antenna/sqrt(8),gridPoints(ydim)+D_antenna/sqrt(8));
+            channels(xdim,ydim) = integral2(E_fun, gridPoints(xdim)-D_antenna/sqrt(8),gridPoints(xdim)+D_antenna/sqrt(8),gridPoints(ydim)-D_antenna/sqrt(8),gridPoints(ydim)+D_antenna/sqrt(8));
 
         end
 
     end
     
-    H(:,k) = sqrt(2/D_antenna^2)*numerator_exact(:);
+    H(:,k) = sqrt(2/D_antenna^2)*channels(:);
 
 end
 
