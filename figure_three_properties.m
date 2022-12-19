@@ -1,3 +1,6 @@
+% This code corresponds to Figure 6 of the book chapter entitled "Near-Field Beamforming and Multiplexing Using Extremely Large Aperture Arrays"
+%written by Parisa Ramezani and Emil Björnson. 
+
 close all;
 clear;
 
@@ -16,14 +19,14 @@ A = (lambda/4)^2;
 %Compute the diagonal of the array for different number of antennas
 diagonals = sqrt(2*N*A);
 
-%Computing free-space far-field channel gain
+%Compute free-space far-field channel gain
 beta_d = A/(4*pi*d^2);
 
-%Computing exact total channel gain
+%Compute exact total channel gain
 PrxPtx_exact = (N*beta_d)./(3*(N*beta_d*pi+1).*sqrt(2*N*beta_d*pi+1)) + 2/(3*pi)*atan(N*beta_d*pi./sqrt(2*N*beta_d*pi+1));
 
 
-%Computing total channel gains using integrals by considering all or some
+%Compute total channel gains using integrals by considering all or some
 %of the near-field properties
 
 fun1 = @(x,y) 1./(4*pi*(x.^2 + y.^2 + d^2));
@@ -54,7 +57,6 @@ plot(diagonals,N*beta_d,'k:','LineWidth',2);
 plot(diagonals,PrxPtx_property1,'b--','LineWidth',2);
 plot(diagonals,PrxPtx_properties12,'k-.','LineWidth',2);
 plot(diagonals,PrxPtx_exact,'r','LineWidth',2);
-%plot(diagonals,PrxPtx_properties123,'r','LineWidth',2); %This is the exact curve but computed using the integral instead
 xlabel('Diagonal $\sqrt{2NA}$ of the array [m]','Interpreter','Latex');
 ylabel('Channel gain','Interpreter','Latex');
 legend({'Far-field approx','Property 1','Properties 1,2','Exact (Properties 1,2,3)'},'Interpreter','Latex','Location','NorthWest');
