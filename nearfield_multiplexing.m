@@ -1,4 +1,5 @@
-% For Figure 13 of the Book Chapter
+% This code corresponds to Figure 11 of the book chapter entitled "Near-Field Beamforming and Multiplexing Using Extremely Large Aperture Arrays"
+%written by Parisa Ramezani and Emil Björnson. 
 
 close all
 clear;
@@ -9,11 +10,11 @@ f_c = 3e9;
 %Wavelength
 lambda = 3e8/f_c;
 
-%Antenna spacing in fraction of wavelengths
-scalefactor = sqrt(2)/4;
+%Side length of each receive antenna in fraction of wavelengths
+sidelength = 1/4; 
 
 %Diagonal of each receive antenna
-D_antenna = scalefactor*lambda;
+D_antenna = sqrt(2)*sidelength*lambda;
 
 %Number of receive antennas per dimension
 Ndim = 100;
