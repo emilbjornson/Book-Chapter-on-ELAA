@@ -1,3 +1,6 @@
+% This code corresponds to Figure 14 of the book chapter entitled "Near-Field Beamforming and Multiplexing Using Extremely Large Aperture Arrays"
+%written by Parisa Ramezani and Emil Björnson. 
+
 close all
 clear;
 
@@ -7,11 +10,11 @@ f_c = 3e9;
 %Wavelength
 lambda = 3e8/f_c;
 
-%Antenna spacing in fraction of wavelengths
-scalefactor = sqrt(2)/4;
+%Side length of each receive antenna in fraction of wavelengths
+sidelength = 1/4; 
 
 %Diagonal of each receive antenna
-D_antenna = scalefactor*lambda;
+D_antenna = sqrt(2)*sidelength*lambda;
 
 %Number of receive antennas per dimension
 Ndim = 100;
@@ -48,14 +51,12 @@ for k = 1:K
 
     %Extract the distance to receiver
     z = focalPoints(k);
-
+    
+    %Compute the electric field perpendicular to a receive antenna at location (x,y,0)
     E_fun = @(x,y) sqrt((z.*(x.^2+z.^2))./((x.^2+y.^2+z.^2).^(5/2))).*exp(-1j*(2*pi).*(sqrt(x.^2+y.^2+z.^2))/lambda);
-    %E2_fun = @(x,y) (z.*(x.^2+z.^2))./((x.^2+y.^2+z.^2).^(5/2));
 
     %Compute all the terms in channel expression
     numerator_exact = zeros(Ndim,Ndim);
-    %denominator_exact =  integral2(E2_fun, -D_antenna/sqrt(8),D_antenna/sqrt(8),-D_antenna/sqrt(8),D_antenna/sqrt(8));
-
 
     for xdim = 1:Ndim
 
@@ -66,8 +67,7 @@ for k = 1:K
         end
 
     end
-
-    %H(:,k) = sqrt((2/D_antenna^2)/(N^2*denominator_exact))*numerator_exact(:);
+    
     H(:,k) = sqrt(2/D_antenna^2)*numerator_exact(:);
 
 end
@@ -77,7 +77,7 @@ end
 gainAtdFA = norm(H(:,1)).^2;
 H = H / sqrt(gainAtdFA);
 
-%Compute the Grammian of the channel matrix
+%Compute the Gramian of the channel matrix
 HH = H'*H;
 
 
@@ -89,8 +89,6 @@ end
 
 %Extract the channel gains after ZF
 HW = abs(diag(H'*W_ZF)).^2;
-
-
 
 
 %Select the range of SNR values at d_FA
