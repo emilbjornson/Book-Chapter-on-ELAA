@@ -1,4 +1,4 @@
-% This code corresponds to Figure 11 of the book chapter entitled "Near-Field Beamforming and Multiplexing Using Extremely Large Aperture Arrays"
+% This code corresponds to Figure 13 of the book chapter entitled "Near-Field Beamforming and Multiplexing Using Extremely Large Aperture Arrays"
 %written by Parisa Ramezani and Emil Björnson. 
 
 close all
