@@ -1,4 +1,6 @@
-% For Figure 10 of the Book Chapter
+% This code corresponds to Figure 10 of the book chapter entitled "Near-Field Beamforming and Multiplexing Using Extremely Large Aperture Arrays"
+%written by Parisa Ramezani and Emil Björnson. 
+
 close all
 clear;
 
@@ -8,12 +10,11 @@ f_c = 3e9;
 %Wavelength
 lambda = 3e8/f_c;
 
-%Changing this factor will not affect the result since everything becomes
-%scaled accordingly
-scalefactor = sqrt(2)/4;
+%Side length of each receive antenna in fraction of wavelengths
+sidelength = 1/4; 
 
 %Diagonal of each receive antenna
-D_antenna = scalefactor*lambda;
+D_antenna = sqrt(2)*sidelength*lambda;
 
 %Number of receive antennas per dimension
 Ndim = 100;
@@ -27,8 +28,8 @@ D_array = Ndim*D_antenna;
 %Center points of the antennas in x and y dimensions
 gridPoints = (-(Ndim-1)/2:1:(Ndim-1)/2)*D_antenna/sqrt(2);
 
+%Define the range of points along the horizontal axis
 relativeRange = logspace(0,4.3,300);
-
 
 %Compute the Fraunhofer distance
 fraunhoferDistanceAntenna = 2*D_antenna^2/lambda;
@@ -49,19 +50,18 @@ for m = 1:length(zRange)
     %Extract distance to transmitter
     z = zRange(m);
         
-    %Define the integrand E(x,y) in (5) and its absolute value square
+    %Define E(x,y) and its absolute value squared
     %(we have removed E_0/sqrt(4*pi) since it will cancel out)
     E_fun = @(x,y) sqrt((z.*(x.^2+z.^2))./((x.^2+y.^2+z.^2).^(5/2))).*exp(-1j*(2*pi).*sqrt((x.^2+y.^2+z.^2))/lambda);
     E2_fun = @(x,y) (z.*(x.^2+z.^2))./((x.^2+y.^2+z.^2).^(5/2));
         
-    %Define the integrand described in the text on Page 4 and its absolute
-    %value square (we have removed E_0/sqrt(4*pi) since it will cancel out)
-    E_fun2 = @(x,y) sqrt(1./((x.^2+y.^2+z.^2))).*exp(-1j*(2*pi).*sqrt((x.^2+y.^2+z.^2))/lambda);
-    E2_fun2 = @(x,y) (1./((x.^2+y.^2+z.^2)));
-        
-        
-    numerator_exact = zeros(Ndim,Ndim);
+    %%Array Gain
+   
+    %compute the integral in the demominator
     denominator_exact =  integral2(E2_fun, -D_antenna/sqrt(8),D_antenna/sqrt(8),-D_antenna/sqrt(8),D_antenna/sqrt(8));
+    
+    %compute all the terms in the numerator
+    numerator_exact = zeros(Ndim,Ndim);
     
     for xdim = 1:Ndim
             
@@ -102,7 +102,7 @@ ylabel('Normalized antenna array gain','Interpreter','Latex');
 set(gca,'fontsize',15);
 
 
-% For the small figure which zooms in a particular range of z
+% Zooming in a particular range of propagation distance
 figure
 indexOfInterest = (relativeRange < 1.2 * 10^4) & (relativeRange > 200);
 semilogx(relativeRange(indexOfInterest) , G_bound(indexOfInterest),'r-.', 'Linewidth', 2)
