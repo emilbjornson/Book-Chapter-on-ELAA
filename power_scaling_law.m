@@ -1,3 +1,6 @@
+% This code corresponds to Figure 8 of the book chapter entitled "Near-Field Beamforming and Multiplexing Using Extremely Large Aperture Arrays"
+%written by Parisa Ramezani and Emil Björnson.
+
 close all;
 clear;
 
@@ -17,7 +20,7 @@ A = (lambda/4)^2;
 beta_d = A/(4*pi*d^2);
 
 
-%Computing exact total channel gain
+%Compute exact total channel gain
 PrxPtx_exact = (N*beta_d)./(3*(N*beta_d*pi+1).*sqrt(2*N*beta_d*pi+1)) + 2/(3*pi)*atan(N*beta_d*pi./sqrt(2*N*beta_d*pi+1));
 
 
