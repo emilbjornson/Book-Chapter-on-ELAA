@@ -119,7 +119,8 @@ xticks([10 100 1000 10000 100000])
 xticklabels({'$10 d_F$','$10^2 d_F$','$10^3 d_F$','$10^4 d_F$','$10^5 d_F$'})
 ylim([0 1]);
 yticks([0 0.25 0.5 0.75 1]);
-legend({'Maximum gain', 'Focus at $z=d_B$','Focus at $z=d_{FA}/10$','Focus at $z=\infty$'},'Interpreter','Latex','Location','Best');
+legend({'Maximum gain', 'Focus at $z=d_B$','Focus at $z=d_{FA}/10$','Focus at $z=\infty$'},'Interpreter','Latex','Location','southeast');
 xlabel('Propagation distance','Interpreter','Latex');
 ylabel('Normalized antenna array gain','Interpreter','Latex');
 set(gca,'fontsize',18);
+axis tight
