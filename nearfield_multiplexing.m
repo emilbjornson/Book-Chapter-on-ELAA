@@ -126,4 +126,5 @@ legend({'Maximum gain','$d_1=\infty$','$d_2=d_{FA}/20$','$d_3=d_{FA}/40$', '$d_4
 xlabel('Propagation distance','Interpreter','Latex');
 ylabel('Normalized antenna array gain','Interpreter','Latex');
 set(gca,'fontsize',18);
+axis tight
 
